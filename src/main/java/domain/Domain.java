@@ -5,19 +5,23 @@ import entity.Address;
 import entity.Employee;
 import entity.Project;
 import org.hibernate.Session;
+import service.AddressService;
+import service.EmployeeService;
+import service.ProjectService;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Domain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
-        session.beginTransaction();
+        AddressService addressService = new AddressService();
+        EmployeeService employeeService = new EmployeeService();
+        ProjectService projectService = new ProjectService();
 
         Address address = new Address();
         address.setCountry("USA");
@@ -42,11 +46,13 @@ public class Domain {
         projects.add(project);
         employee.setProjects(projects);
 
-        session.save(address);
-        session.save(employee);
-        session.save(project);
+        addressService.add(address);
+        employeeService.add(employee);
+        projectService.add(project);
 
-        session.getTransaction().commit();
+//        Address address1 = addressService.getById(1l);
+//        System.out.println(address1);
+
         HibernateUtil.shutdown();
 
     }
